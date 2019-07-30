@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginStart="@dimen/view_margin"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="@dimen/view_margin"
+        app:cardBackgroundColor="@color/card_bg"
+        app:cardCornerRadius="10dp"
+        app:cardMaxElevation="20dp"
+        app:cardPreventCornerOverlap="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/card_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_margin="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/employee_image_thumb"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.4">
+
+                <ImageButton
+                    android:id="@+id/thumb_imageview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/employee_thumbnail_image"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_image_icon" />
+
+                <ImageView
+                    android:id="@+id/full_screen"
+                    style="@style/zoom_button"
+                    android:contentDescription="@string/view_larger_image"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/zoom_in_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/square_logo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/square_logo_content_description"
+                android:src="@drawable/square_horizontal_logo"
+                app:layout_constraintBottom_toBottomOf="@id/employee_image_thumb"
+                app:layout_constraintDimensionRatio="4:1"
+                app:layout_constraintStart_toEndOf="@id/employee_image_thumb"
+                app:layout_constraintTop_toTopOf="@id/employee_image_thumb"
+                app:layout_constraintVertical_bias="0.25"
+                app:layout_constraintWidth_percent="0.4" />
+
+            <TextView
+                android:id="@+id/name_textview"
+                style="@style/bold_textview"
+                android:layout_margin="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/employee_image_thumb" />
+
+            <ImageView
+                android:id="@+id/email_icon"
+                style="@style/field_icon_imageview"
+                android:contentDescription="@string/email_icon"
+                android:src="@drawable/email_icon"
+                app:layout_constraintStart_toStartOf="@id/name_textview"
+                app:layout_constraintTop_toBottomOf="@id/name_textview" />
+
+            <TextView
+                android:id="@+id/email_textview"
+                style="@style/regular_textview"
+                android:layout_marginStart="@dimen/field_start_margin"
+                app:layout_constraintBottom_toBottomOf="@id/email_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/email_icon"
+                app:layout_constraintTop_toTopOf="@id/email_icon" />
+
+            <ImageView
+                android:id="@+id/phone_icon"
+                style="@style/field_icon_imageview"
+                android:contentDescription="@string/phone_icon"
+                android:src="@drawable/phone_icon"
+                app:layout_constraintStart_toStartOf="@id/email_icon"
+                app:layout_constraintTop_toBottomOf="@id/email_icon" />
+
+            <TextView
+                android:id="@+id/phone_textview"
+                style="@style/regular_textview"
+                android:layout_marginStart="@dimen/field_start_margin"
+                app:layout_constraintBottom_toBottomOf="@id/phone_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/phone_icon"
+                app:layout_constraintTop_toTopOf="@id/phone_icon" />
+
+            <TextView
+                android:id="@+id/employment_type_textview"
+                style="@style/regular_textview"
+                android:layout_marginTop="@dimen/field_top_margin_new_category"
+                android:text="@string/employment_type"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/name_textview"
+                app:layout_constraintTop_toBottomOf="@id/phone_textview" />
+
+            <TextView
+                android:id="@+id/team_textview"
+                style="@style/regular_textview"
+                android:layout_marginTop="@dimen/field_top_margin_same_category"
+                android:text="@string/employment_team"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/name_textview"
+                app:layout_constraintTop_toBottomOf="@id/employment_type_textview" />
+
+            <TextView
+                android:id="@+id/bio_textview"
+                style="@style/regular_textview"
+                android:layout_marginTop="@dimen/field_top_margin_new_category"
+                android:layout_marginBottom="15dp"
+                android:ellipsize="end"
+                android:maxLength="302"
+                android:text="@string/bio"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/name_textview"
+                app:layout_constraintTop_toBottomOf="@id/team_textview" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/large_imageview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/dark_overlay"
+        android:elevation="21dp"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/large_imageview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/employee_thumbnail_image"
+            android:scaleType="fitCenter"
+            android:src="@drawable/default_image_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/exit_full_screen"
+            style="@style/zoom_button"
+            android:background="@android:color/white"
+            android:contentDescription="@string/view_larger_image"
+            android:scaleType="fitXY"
+            android:src="@drawable/zoom_out_icon"
+            app:layout_constraintBottom_toBottomOf="@id/large_imageview"
+            app:layout_constraintEnd_toEndOf="@id/large_imageview" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/progress_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_overlay"
+        android:elevation="22dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateOnly="true" />
+
+        <TextView
+            android:id="@+id/progress_bar_textview"
+            style="@style/bold_textview"
+            android:text="@string/loading" />
+
+    </LinearLayout>
+
+</FrameLayout>

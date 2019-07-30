@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#555555</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#000000</color>
+    <color name="dark_overlay">#CC888888</color>
+    <color name="light_overlay">#88666666</color>
+    <color name="light_gray">#EEEEEE</color>
+    <color name="text_gray">#666666</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="app_bg_color">#CCCCCC</color>
+</resources>

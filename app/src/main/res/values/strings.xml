@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Square Employee Directory</string>
+    <string name="square_logo_content_description">square logo</string>
+    <string name="view_larger_image">View larger image</string>
+    <string name="employee_thumbnail_image">Employee Thumbnail Image</string>
+    <string name="employment_type">Employment Type - %1$s</string>
+    <string name="employment_team">Team - %1$s</string>
+    <string name="bio">\"%1$s\"</string>
+    <string name="title_employee_list">Square Employees Directory</string>
+    <string name="title_employee_detail">Employee Details</string>
+    <string name="loading">Loading…</string>
+    <string name="error_icon">Error icon</string>
+    <string name="retry">Retry</string>
+    <string name="download_failed">Failed to download employee data</string>
+    <string name="not_connected_error">Device not connected to Internet.</string>
+    <string name="no_records_found">No Records found</string>
+    <string name="error_title">Error</string>
+    <string name="okay">Okay</string>
+    <string name="malformed_data_error">Found malformed employee data</string>
+    <string name="email_icon">Email_Icon</string>
+    <string name="phone_icon">Phone_Icon</string>
+</resources>

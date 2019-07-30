@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="view_margin">16dp</dimen>
+    <dimen name="item_width">200dp</dimen>
+    <dimen name="field_start_margin">10dp</dimen>
+    <dimen name="field_top_margin_same_category">10dp</dimen>
+    <dimen name="field_top_margin_new_category">15dp</dimen>
+</resources>
