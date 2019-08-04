@@ -18,14 +18,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonParseException;
+import com.square.interviewapp.databinding.EmployeeListContentBinding;
 import com.square.interviewapp.model.EmployeeDetails;
 import com.square.interviewapp.retrofit.SquareAPIService;
 import com.square.interviewapp.utils.EmployeeDataLoader;
-import com.square.interviewapp.utils.ImageLoader;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -237,21 +238,14 @@ public class EmployeeListActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View v = inflater.inflate(R.layout.employee_list_content, parent, false);
-            return new ViewHolder(v);
+            EmployeeListContentBinding binding = DataBindingUtil.inflate(inflater, R.layout.employee_list_content, parent, false);
+            return new ViewHolder(binding);
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             EmployeeDetails details = mEmployeeList.get(position);
-            holder.thumbImageView.setImageResource(R.drawable.default_image_icon);
-            ImageLoader.get(mParentActivity).loadImage(details.getPhotoUrlSmall(), holder.thumbImageView);
-            holder.nameTextView.setText(details.getFullName());
-            holder.emailTextView.setText(details.getEmailAddress());
-            holder.phoneTextView.setText(details.getPhoneNumber());
-
-            holder.itemView.setTag(mEmployeeList.get(position));
-            holder.itemView.setOnClickListener(mOnClickListener);
+            holder.bind(details, mOnClickListener);
         }
 
         @Override
@@ -262,16 +256,24 @@ public class EmployeeListActivity extends AppCompatActivity {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-
+        EmployeeListContentBinding binding;
         ImageView thumbImageView;
         TextView nameTextView, emailTextView, phoneTextView;
 
-        ViewHolder(@NonNull View itemView) {
-            super(itemView);
+        ViewHolder(@NonNull EmployeeListContentBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
             thumbImageView = itemView.findViewById(R.id.employee_thumb_imageview);
             nameTextView = itemView.findViewById(R.id.name_textview);
             emailTextView = itemView.findViewById(R.id.email_textview);
             phoneTextView = itemView.findViewById(R.id.phone_textview);
+        }
+
+        void bind(final EmployeeDetails details, final View.OnClickListener listener) {
+            itemView.setTag(details);
+            binding.setListener(listener);
+            binding.setEmployeeDetails(details);
+            binding.executePendingBindings();
         }
 
     }

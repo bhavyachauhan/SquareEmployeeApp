@@ -2,8 +2,13 @@ package com.square.interviewapp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.ImageView;
+
+import androidx.databinding.BindingAdapter;
 
 import com.google.gson.annotations.SerializedName;
+import com.square.interviewapp.R;
+import com.square.interviewapp.utils.ImageLoader;
 import com.square.interviewapp.utils.gson.Required;
 
 public class EmployeeDetails implements Parcelable {
@@ -114,6 +119,11 @@ public class EmployeeDetails implements Parcelable {
 
     public EmployeeType getEmployeeType() {
         return employeeType;
+    }
+
+    @BindingAdapter({"bind:thumbImageUrl"})
+    public static void loadThumb(ImageView thumbImageView, String imageUrl) {
+        ImageLoader.get(thumbImageView.getContext()).loadImage(imageUrl, thumbImageView, R.drawable.default_image_icon);
     }
 
     @Override

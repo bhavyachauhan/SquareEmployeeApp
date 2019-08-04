@@ -12,14 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.square.interviewapp.databinding.EmployeeDetailBinding;
 import com.square.interviewapp.model.EmployeeDetails;
 import com.square.interviewapp.utils.ImageLoader;
 
@@ -37,6 +37,9 @@ public class EmployeeDetailFragment extends Fragment {
     private EmployeeDetails mItem;
     private Animator currentAnimator;
     private LinearLayout progressBarLayout;
+    private ImageView expandedImageView;
+    private ViewGroup rootLayout;
+    private ViewGroup largeImageViewContainer;
 
     public EmployeeDetailFragment() {
     }
@@ -53,59 +56,55 @@ public class EmployeeDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.employee_detail, container, false);
+        EmployeeDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.employee_detail, container, false);
+
+        final View rootView = binding.getRoot();
 
         if (mItem != null) {
+            binding.setEmployeeDetails(mItem);
             progressBarLayout = rootView.findViewById(R.id.progress_bar_layout);
-
-            TextView nameTextView = rootView.findViewById(R.id.name_textview);
-            nameTextView.setText(mItem.getFullName());
-            TextView emailTextView = rootView.findViewById(R.id.email_textview);
-            emailTextView.setText(mItem.getEmailAddress());
-            TextView phoneTextView = rootView.findViewById(R.id.phone_textview);
-            phoneTextView.setText(mItem.getPhoneNumber());
-            TextView employmentTypeTextView = rootView.findViewById(R.id.employment_type_textview);
-            employmentTypeTextView.setText(getString(R.string.employment_type, mItem.getEmployeeType().description()));
-            TextView teamTextView = rootView.findViewById(R.id.team_textview);
-            teamTextView.setText(getString(R.string.employment_team, mItem.getTeam()));
-            TextView bioTextView = rootView.findViewById(R.id.bio_textview);
-            bioTextView.setText(getString(R.string.bio, mItem.getBiography()));
-
-            final ImageButton thumbImageView = rootView.findViewById(R.id.thumb_imageview);
-            ImageLoader.get(this.getActivity()).loadImage(mItem.getPhotoUrlSmall(), thumbImageView);
-
-            final int duration = getResources().getInteger(android.R.integer.config_shortAnimTime);
-            final ImageView expandedImageView = rootView.findViewById(R.id.large_imageview);
-            thumbImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    progressBarLayout.setVisibility(View.VISIBLE);
-                    ImageLoader.get(getContext()).loadImage(mItem.getPhotoUrlLarge(), expandedImageView, new ImageLoader.OnCompleteListener() {
-                        @Override
-                        public void onSuccess() {
-                            if (getActivity() == null) {
-                                return;
-                            }
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressBarLayout.setVisibility(View.INVISIBLE);
-                                    zoomImageFromThumb(rootView.findViewById(R.id.root_layout), thumbImageView, rootView.findViewById(R.id.large_imageview_container), duration);
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            progressBarLayout.setVisibility(View.INVISIBLE);
-                            showError();
-                        }
-                    });
-                }
-            });
+            expandedImageView = rootView.findViewById(R.id.large_imageview);
+            rootLayout = rootView.findViewById(R.id.root_layout);
+            largeImageViewContainer = rootView.findViewById(R.id.large_imageview_container);
+            binding.setListener(listener);
         }
 
         return rootView;
+    }
+
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (view.getId() == R.id.thumb_imageview && view instanceof ImageView) {
+                onThumbClicked((ImageView) view);
+            }
+        }
+    };
+
+    private void onThumbClicked(final ImageView thumbImageView) {
+        final int duration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        progressBarLayout.setVisibility(View.VISIBLE);
+        ImageLoader.get(getContext()).loadImage(mItem.getPhotoUrlLarge(), expandedImageView, new ImageLoader.OnCompleteListener() {
+            @Override
+            public void onSuccess() {
+                if (getActivity() == null) {
+                    return;
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBarLayout.setVisibility(View.INVISIBLE);
+                        zoomImageFromThumb(rootLayout, thumbImageView, largeImageViewContainer, duration);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure() {
+                progressBarLayout.setVisibility(View.INVISIBLE);
+                showError();
+            }
+        });
     }
 
     private void showError() {

@@ -47,24 +47,36 @@ public class ImageLoader {
         return imageLoader;
     }
 
-    public void loadImage(final String url, final ImageView imageView) {
+    public void loadImage(final String url, final ImageView imageView, final int defaultImage) {
+        loadImage(url, imageView, null, defaultImage);
+    }
+
+    void loadImage(final String url, final ImageView imageView) {
         loadImage(url, imageView, null);
     }
 
     public void loadImage(final String url, final ImageView imageView, final OnCompleteListener listener) {
+        loadImage(url, imageView, listener, android.R.drawable.sym_def_app_icon);
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    public void loadImage(final String url, final ImageView imageView, final OnCompleteListener listener, final int defaultImage) {
         Bitmap bitmap = getBitmapFromMemoryCache(url);
-        if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);
-            if (listener != null) {
-                listener.onSuccess();
+        if (bitmap == null) {
+            bitmap = getBitmapFromDiskCache(url);
+            if (bitmap != null) {
+                addBitmapToMemoryCache(url, bitmap);
             }
-            return;
         }
 
-        bitmap = getBitmapFromDiskCache(url);
         if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);
-            addBitmapToMemoryCache(url, bitmap);
+            final Bitmap finalBitmap = bitmap;
+            imageView.post(new Runnable() {
+                @Override
+                public void run() {
+                    imageView.setImageBitmap(finalBitmap);
+                }
+            });
             if (listener != null) {
                 listener.onSuccess();
             }
@@ -72,6 +84,13 @@ public class ImageLoader {
         }
 
         if (context.get() != null) {
+            imageView.post(new Runnable() {
+                @Override
+                public void run() {
+                    imageView.setImageResource(defaultImage);
+                }
+            });
+
             new ImageLoaderTask(imageView, listener).execute(url);
         }
     }
